@@ -9,4 +9,4 @@ Information Visualization Project
 ## More
 [DEMO](https://nyu-vis-fall2018.github.io/project-template/)
 
-[Project Descrioption](project.pdf)
+[Project Description](project.pdf)
