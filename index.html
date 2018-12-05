@@ -2,11 +2,12 @@
 <html>
 <head>
 	<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="site.scss">
 	<script type="text/javascript" src="bootstrap/js/jquery-3.3.1.slim.min.js"></script>
 	<script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
 	<script src="https://d3js.org/d3.v4.min.js"></script>
-	  <script src="https://d3js.org/topojson.v2.min.js"></script>
-	  <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+	<script src="https://d3js.org/topojson.v2.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
 	<title>Timely Flights For You</title>
 </head>
 <style>
@@ -46,53 +47,84 @@
 		margin-top: 10px;
 		display: inline-block
 	}
+
 </style>
 
 <body>
-	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-	  <span class="navbar-brand mb-0 h1">Timely Flights</span>
-	  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-	    <span class="navbar-toggler-icon"></span>
-	  </button>
-	  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-	    <ul class="navbar-nav mr-auto">
-	      <li class="nav-item active">
-	        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-	      </li>
-	      <li class="nav-item">
-			<a class="nav-link" href="#">Graph 1</a>
-		  </li>
-		  <li class="nav-item">
-			<a class="nav-link" href="#">Graph 2</a>
-		  </li>
-		  <li class="nav-item">
-			<a class="nav-link" href="#">Graph 3</a>
-		  </li>
-	    </ul>
-	  </div>
-	</nav>
+		<!-- <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+			version="1.1" height="200" width="400">
+		 <defs>
+		   <path id="basePath" d="M 50,150 A 280 500 0 0 1 350,150" />
+		   <mask id="mask">
+			 <use xlink:href="#basePath" stroke-width="3" stroke="white"
+				  stroke-dasharray="1000,0" fill="none">
+			   <animate attributeName="stroke-dasharray" from="0,348.5" to="348.5,0"
+				   begin="0s" dur="5s" fill="freeze" />
+			 </use>
+		   </mask>
+		 </defs>
+		 <circle r="4" cx="750" cy="150" fill="grey" />
+		 <circle r="4" cx="750" cy="750" fill="grey" />
+		 <use xlink:href="#basePath" stroke-width="2" stroke-dasharray="10"
+			  stroke="grey" fill="none" mask="url(#mask)"/>
+		 <path d="M 27,3 H 21 L 13,15 H 9 L 12,3 H 5 L 3,7 H -1 L 1,0 -1,-7 H 3 L 5,-3 H 12 L 9,-15 H 13 L 21,-3 H 27 C 33,-3 33,3 27,3 Z"
+			  fill="white" stroke="black" stroke-width="1.5">
+		   <animateMotion rotate="auto" begin="0s" dur="5s" fill="freeze">
+			 <mpath xlink:href="#basePath"/>
+		   </animateMotion>
+		 </path>
+	   </svg> -->
+		<!-- <div id="flight" class="flight"></div>
+		<div class="runway">
+		  <div class="runwayNo">27 N</div>
+		</div>
+		
+		<div class="controls">
+		  <button onclick="simulate()">TAKE OFF</button>
+		</div> -->
 
-	<div class="container-fluid" id="graph_1">
-		<h1>Airport Traffic</h1>
-		<svg id="Map" width="auto" height="600"></svg>
-		<i class="down"></i>
+	<div class="card text-center">
+		<div class="card-header">
+			<h1>Airport Traffic</h1>
+		</div>
+		<div class="card-body">
+			<svg id="Map" width="1000" height="600"></svg>
+		</div>
 	</div>
 
-	<div class="container-fluid" id="graph_2">
-		<h1>Temporal Variability in Flight Delays</h1>
+	<div class="card text-center">
+		<div class="card-header">
+			<h1>Temporal Variability in Flight Delays</h1>
+		</div>
+		<div class="card-body">
+			<svg id="graph_2" width="1000" height="600"></svg>
+		</div>
 	</div>
-	
-	<div class="container-fluid" id="graph_3">
-		<h1>Monthly Cancellation Count</h1>
+
+	<div class="card text-center">
+		<div class="card-header">
+			<h1>Monthly Cancellation Count</h1>
+		</div>
+		<div class="card-body">
+			<svg id="graph_3" width="1000" height="600"></svg>
+		</div>
 	</div>
 
 	</body>
 </html>
+
 <script>
-	$(document).on('click', ['.states','i'], function(){
-		console.log($(this));
-		$("html, body").animate({scrollTop: 700 }, 2000);
-	});
+	// function simulate(){
+	// 	$("#flight").addClass("run");
+	// 	setTimeout(function(){
+	// 		$("#flight").removeClass("run");
+	// 	},10000)
+	// }
+
+	// $(document).on('click', ['.states','i'], function(){
+	// 	console.log($(this));
+	// 	$("html, body").animate({scrollTop: 700 }, 2000);
+	// });
 
 	// Map of US
 	var map_svg = d3.select("#Map");
