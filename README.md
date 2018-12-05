@@ -1,13 +1,10 @@
 # Project Name
-**Authors**: Jhon Doe (jd2545), Mark Smith (ms4568)
+**Authors**: Dhaval Popat (dkp288), Ronak Thakkar (rht241), Sameer Korlahalli (ssk698)
 
-Group X (Online: Group Y) 
-
-![Screenhot](screenshot.jpg)
-
+Group 13 (Online: Group 13)
 
 ## About
-In this project we ...
+Information Visualization Project
 
 ## More
 [DEMO](https://nyu-vis-fall2018.github.io/project-template/)
