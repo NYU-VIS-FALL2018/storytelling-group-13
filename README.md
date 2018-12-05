@@ -1,7 +1,7 @@
 # Project Name
-**Authors**: Dhaval Popat (dkp288), Ronak Thakkar (rht241), Sameer Korlahalli (ssk698)
+**Authors**: Dhaval Popat (dkp288), Ronak Thakkar (rht241 - online), Sameer Korlahalli (ssk698)
 
-Group 13 (Online: Group 13)
+Group 13
 
 ## About
 Information Visualization Project
