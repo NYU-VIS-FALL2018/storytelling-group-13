@@ -3,11 +3,13 @@
 <head>
 	<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="site.scss">
+	<link rel="stylesheet" type="text/css" href="css/odometer-theme-default.css">
 	<script type="text/javascript" src="bootstrap/js/jquery-3.3.1.slim.min.js"></script>
 	<script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
 	<script src="https://d3js.org/d3.v4.min.js"></script>
 	<script src="https://d3js.org/topojson.v2.min.js"></script>
 	<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+	<script src="js/odometer.min.js"></script>
 	<title>Timely Flights For You</title>
 </head>
 <style>
@@ -52,9 +54,44 @@
 		scroll-behavior: smooth;
 	}
 
+	.count {
+		padding: 10px;
+		margin: 5px;
+		font-weight: bold;
+		font-size: -webkit-xxx-large
+	}
+
+	.intro{
+		height: 300px;
+		text-align: center;
+		margin-left: auto;
+		margin-right: auto;
+		position: relative;
+		background: url("https://cdn.dribbble.com/users/398490/screenshots/2189858/airplane-for-dribbble.gif");
+		background-size: cover;
+		/* background-size: auto 100%; */
+		background-position-x: -300px;
+		background-position-y: 50%;
+		/* color: white */
+	  	/* height: 500px; */
+	}
+	
+	.statement{
+		display: none;
+		top: 55%;
+		left: 70%;
+		position: absolute;
+		transform: translate(-50%, -50%);
+		font-weight: bold
+	}
+
 </style>
 
 <body>
+	<div class="intro">
+		<h2 class="odometer count" style="position: absolute;top: 35%;left: 70%;transform: translate(-50%, -50%);"></h2>
+		<p class="statement">The average number of flights that fly in and out of US per day</p>
+	</div>
 	<div id="section1" class="card text-center">
 		<div class="card-header">
 			<h2>Flight delay across cities in the U.S.</h2>
@@ -101,6 +138,11 @@
 	// 	console.log($(this));
 	// 	$("html, body").animate({scrollTop: 700 }, 2000);
 	// });
+
+	$(document).ready(function(){
+		$('.odometer').html(87564);
+		$('.statement').fadeIn(3000);
+	});
 
 	// Map of US
 	var map_svg = d3.select("#graph_1");
