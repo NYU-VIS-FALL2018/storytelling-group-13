@@ -25,13 +25,21 @@
 		fill: lightgray;
 	}
 
-	.state-borders {
+	/* .state-borders {
 		fill: none;
 		stroke: #fff;
 		stroke-width: 2px;
 		stroke-linejoin: round;
 		stroke-linecap: round;
 		pointer-events: none;
+	} */
+	.states-borders{
+		fill: none;
+	  stroke: #000;
+	  stroke-width: 0.5px;
+	  stroke-linejoin: round;
+	  stroke-linecap: round;
+	  pointer-events: none;
 	}
 	.bar{
 		fill: steelblue
@@ -115,7 +123,11 @@
 		75%  {background-color:green; left:0px; top:30px;}
 		100% {background-color:red; left:0px; top:0px;}
 	}
-
+	.line {
+		fill: none;
+		stroke: steelblue;
+		stroke-width: 2px;
+	}
 </style>
 
 <body>
@@ -125,7 +137,7 @@
 	</div>
 	<div id="section1" class="card text-center">
 		<div class="card-header">
-			<h2>Flight delay across cities in the U.S.</h2>
+			<h2>Are flight delays equally spread across airports in the U.S.?</h2>
 		</div>
 		<div class="card-body">
 			<svg id="graph_1" width="1000" height="600"></svg>
@@ -146,10 +158,22 @@
 
 	<div id="section3" class="card text-center">
 		<div class="card-header">
-			<h2>Is there a correlation between average flight cancellation and time of the year?</h2>
+			<h2>How much are airlines affected on a temporal basis?</h2>
 		</div>
 		<div class="card-body">
-			<svg id="graph_3" width="1000" height="600"></svg>
+			<!-- <svg id="graph_3" width="1000" height="600"></svg> -->
+			<img src="airlines.png".png" width="750" height="1000">
+			<a href="#section4" id="navigation"><span></span><img style="width: 60px; height: auto" src="flight_icon.jpg"></a>
+		</div>
+	</div>
+
+	<div id="section4" class="card text-center">
+		<div class="card-header">
+			<h2>Does less average delay mean a better airline?</h2>
+		</div>
+		<div class="card-body">
+			<!-- <svg id="graph_4" width="1000" height="600"></svg> -->
+			<img src="Sheet 4.png" width="900" height="600">
 		</div>
 	</div>
 
@@ -203,6 +227,10 @@
 					.datum(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; }))
 					.attr("class", "mesh")
 					.attr("d", path);
+			
+			map_svg.append("path")
+					.attr("class", "states-borders")
+					.attr("d", path(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; })));
 
 			d3.csv("data/airport-delays.csv", function(error, data){
 				if (error) throw error;
@@ -288,49 +316,134 @@
 	});
 
 	// Line graph
-	d3.csv("data/monthly-cancellations.csv", function(error, data) {
+	d3.csv("data/airline-monthly.csv", function(error, data) {
 		if (error) throw error;
 		for(i=0;i<data.length;i++){
-			data[i].CANCELLATION_COUNT = parseInt(data[i].CANCELLATION_COUNT);
+			data[i].AVG_DELAY = parseInt(data[i].AVG_DELAY);
 		}
 		data.forEach(function(d) {
-			d.CANCELLATION_COUNT = +d.CANCELLATION_COUNT;
+			d.AVG_DELAY = +d.AVG_DELAY;
 		});
 
 		var dataset = data;
+		var data_map = {};
+		for(i=0;i<dataset.length;i++){
+			if(dataset[i].AIRLINE_NAME!="US Airways Inc."){
+				if(dataset[i].AIRLINE_NAME in data_map){
+					data_map[dataset[i].AIRLINE_NAME].push(parseFloat(dataset[i].AVG_DELAY))
+				}
+				else{
+					data_map[dataset[i].AIRLINE_NAME] = [parseFloat(dataset[i].AVG_DELAY)];
+				}
+			}
+		}
+		console.log(data_map);
+		var airlines = Object.keys(data_map);
 
-		var xScale = d3.scaleBand()
-				.range([0, width]);
+		var margin = {top: 20, right: 20, bottom: 30, left: 50},
+			width = 960 - margin.left - margin.right,
+			height = 500 - margin.top - margin.bottom;
 
-		var yScale = d3.scaleLinear()
-				.range([height, 0]);
+		var svg = d3.select("#graph_3").append("svg")
+				.attr("width", width + margin.left + margin.right)
+				.attr("height", height + margin.top + margin.bottom)
+				.append("g")
+				.attr("transform",
+					"translate(" + margin.left + "," + margin.top + ")");
+		
+		// set the ranges
+		var x = d3.scaleLinear().range([0, width]);
+		var y = d3.scaleLinear().range([height, 0]);
 
-		xScale.domain(data.map(function(d) { return d.MONTH_NAME; }));
-		yScale.domain([0, d3.max(data, function(d) { return d.CANCELLATION_COUNT; })]);
+		// Add the X Axis
+		svg.append("g")
+				.attr("transform", "translate(0," + height + ")")
+				.call(d3.axisBottom(x));
 
-		var line = d3.line()
-				.x(function(d, i) { return xScale(d.MONTH_NAME); })
-				.y(function(d) { return yScale(d.CANCELLATION_COUNT); })
-				.curve(d3.curveMonotoneX)
+		// Add the Y Axis
+		svg.append("g")
+			.call(d3.axisLeft(y));
 
-		var line_svg = d3.select("#graph_3").append("svg")
-			.attr("width", width + margin.left + margin.right)
-			.attr("height", height + margin.top + margin.bottom)
-			.append("g")
-			.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+		for(index=0;index<airlines.length;index++){
+			// console.log(data_map[airlines[index]])
+			// var xScale = d3.scaleBand()
+			// 		.range([0, width]);
 
-		line_svg.append("g")
-			.attr("class", "x axis")
-			.attr("transform", "translate(0," + height + ")")
-			.call(d3.axisBottom(xScale));
+			// var yScale = d3.scaleLinear()
+			// 		.range([height, 0]);
 
-		line_svg.append("g")
-			.attr("class", "y axis")
-			.call(d3.axisLeft(yScale));
+			// xScale.domain([1,2,3,4,5,6,7,8,9,10,11,12]);
+			// yScale.domain([0, d3.max(data_map[airlines[index]], function(d) { return parseFloat(d); })]);
 
-		line_svg.append("path")
-			.datum(dataset)
-			.attr("class", "line")
-			.attr("d", line);
+			// var line = d3.line()
+			// 		.x(function(d, i) { return xScale([1,2,3,4,5,6,7,8,9,10,11,12]); })
+			// 		.y(function(d) { return yScale(parseFloat(d)); })
+			// 		.curve(d3.curveMonotoneX)
+
+			// var line_svg = d3.select("#graph_3").append("svg")
+			// 	.attr("width", width + margin.left + margin.right)
+			// 	.attr("height", height + margin.top + margin.bottom)
+			// 	.append("g")
+			// 	.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+			// line_svg.append("g")
+			// 	.attr("class", "x axis")
+			// 	.attr("transform", "translate(0," + height + ")")
+			// 	.call(d3.axisBottom(xScale));
+
+			// line_svg.append("g")
+			// 	.attr("class", "y axis")
+			// 	.call(d3.axisLeft(yScale));
+
+			// line_svg.append("path")
+			// 	.datum(data_map[airlines[index]])
+			// 	.attr("class", "line")
+			// 	.attr("d", line);
+
+			// define the 1st line
+			var valueline = d3.line()
+				.x([1,2,3,4,5,6,7,8,9,10,11,12])
+				.y(function(d) { console.log(d, y(d)); return y(d); });
+
+			// // define the 2nd line
+			// var valueline2 = d3.line()
+			// 	.x(function(d) { return x(d.date); })
+			// 	.y(function(d) { return y(d.open); });
+
+			// append the svg obgect to the body of the page
+			// appends a 'group' element to 'svg'
+			// moves the 'group' element to the top left margin
+			
+
+			// Get the data
+
+			// format the data
+			// data.forEach(function(d) {
+			// 	d.date = parseTime(d.date);
+			// 	d.close = +d.close;
+			// 	d.open = +d.open;
+			// });
+
+			// Scale the range of the data
+			x.domain([1,2,3,4,5,6,7,8,9,10,11,12]);
+			y.domain([0, d3.max(data_map[airlines[index]], function(d) {
+				return d; })]);
+
+			// Add the valueline path.
+			svg.append("path")
+				.data([data_map[airlines[index]]])
+				.attr("class", "line")
+				.style("stroke", "red")
+				.attr("d", valueline);
+
+			// // Add the valueline2 path.
+			// svg.append("path")
+			// 	.data([data])
+			// 	.attr("class", "line")
+			// 	.style("stroke", "red")
+			// 	.attr("d", valueline2);
+
+			
+		}	
 	});
 </script>
