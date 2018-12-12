@@ -18,14 +18,17 @@
 	    stroke: steelblue;
 	    stroke-width: 2px;
 	}
+	.mesh{
+		fill: lightgrey
+	}
 	.states :hover {
-		fill: steelblue;
+		fill: lightgray;
 	}
 
 	.state-borders {
 		fill: none;
 		stroke: #fff;
-		stroke-width: 0.5px;
+		stroke-width: 2px;
 		stroke-linejoin: round;
 		stroke-linecap: round;
 		pointer-events: none;
@@ -69,13 +72,13 @@
 		position: relative;
 		background: url("https://cdn.dribbble.com/users/398490/screenshots/2189858/airplane-for-dribbble.gif");
 		background-size: cover;
-		/* background-size: auto 100%; */
-		background-position-x: -300px;
+		/* background-size: auto 385%; */
+		background-position-x: -270px;
 		background-position-y: 50%;
 		/* color: white */
 	  	/* height: 500px; */
 	}
-	
+
 	.statement{
 		display: none;
 		top: 55%;
@@ -83,6 +86,34 @@
 		position: absolute;
 		transform: translate(-50%, -50%);
 		font-weight: bold
+	}
+
+	#navigation{
+		-webkit-animation-name: godown; /* Safari 4.0 - 8.0 */
+  		-webkit-animation-duration: 2s;
+		animation-name: godown;
+		animation-duration: 2s;
+		animation-iteration-count: infinite;
+		position: relative;
+	}
+	#navigation:hover{
+		animation-name: none;
+	}
+	@-webkit-keyframes godown{
+		0%   {background-color:red; left:0px; top:0px;}
+		/*25%  {background-color:yellow; left:200px; top:0px;}*/
+		/*50%  {background-color:blue; left:200px; top:200px;}*/
+		75%  {background-color:green; left:0px; top:30px;}
+		100% {background-color:red; left:0px; top:0px;}
+	}
+
+	@keyframes godown{
+		0%   {background-color:red; left:0px; top:0px;}
+		/*25%  {background-color:yellow; left:200px; top:0px;}*/
+		/*50%  {background-color:blue; left:200px; top:200px;}*/
+		/*75%  {background-color:green; left:0px; top:200px;}*/
+		75%  {background-color:green; left:0px; top:30px;}
+		100% {background-color:red; left:0px; top:0px;}
 	}
 
 </style>
@@ -98,7 +129,7 @@
 		</div>
 		<div class="card-body">
 			<svg id="graph_1" width="1000" height="600"></svg>
-			<a href="#section2"><span></span><img style="width: 100px; height: auto" src="flight_icon.jpg"></a>
+			<a href="#section2" id="navigation"><span></span><img style="width: 60px; height: auto" src="flight_icon.jpg"></a>
 		</div>
 	</div>
 
@@ -108,7 +139,7 @@
 		</div>
 		<div class="card-body">
 				<svg id="graph_2" width="1000" height="600"></svg>
-				<a href="#section3"><span></span><img style="width: 100px; height: auto" src="flight_icon.jpg"></a>
+				<a href="#section3" id="navigation"><span></span><img style="width: 60px; height: auto" src="flight_icon.jpg"></a>
 			</div>
 		</div>
 	</div>
@@ -146,23 +177,69 @@
 
 	// Map of US
 	var map_svg = d3.select("#graph_1");
-	var path = d3.geoPath();
+	var projection = d3.geoMercator();
 
-	d3.json("https://d3js.org/us-10m.v1.json", function(error, us) {
+	// create path variable
+	var path = d3.geoPath().projection(projection);
+
+	d3.json("js/us.json", function(error, us) {
 			if (error) throw error;
 
-			map_svg.append("g")
-					.attr("class", "states")
-					.attr("fill", "#ddd")
-					.selectAll("path")
-					.data(topojson.feature(us, us.objects.states).features)
-					.enter().append("path")
+			states = topojson.feature(us, us.objects.states).features
+			// set projection parameters
+			projection
+			.scale(1000)
+			.center([-98.57, 39.82])
+
+			map_svg.selectAll("path")
+					.data(states).enter()
+					.append("path")
+					.attr("class", "feature")
+					.style("fill", "lightgray")
 					.attr("d", path);
 
+			// put boarder around states 
 			map_svg.append("path")
-					.attr("class", "state-borders")
-					.attr("fill", "#eee")
-					.attr("d", path(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; })));
+					.datum(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; }))
+					.attr("class", "mesh")
+					.attr("d", path);
+
+			d3.csv("data/airport-delays.csv", function(error, data){
+				if (error) throw error;
+				console.log(data);
+				// var colorScale  = d3.scaleOrdinal(d3.schemeCategory10);
+
+				map_svg.selectAll("circle")
+                .data(data).enter()
+                .append("circle")
+				// .attr("transform", function(d) { return "translate(" + path.centroid([d['LATITUDE'],]) + ")"; })
+                .attr("cx", function (d) { return projection([parseFloat(d['LONGITUDE']), parseFloat(d['LATITUDE'])])[0]; })
+                .attr("cy", function (d) { return projection([parseFloat(d['LONGITUDE']), parseFloat(d['LATITUDE'])])[1]; })
+                .attr("r", function (d) { return  (15*(parseFloat(d['AVG_DELAY'])/77)).toString()+"px"})
+                .attr("fill", function(d){
+					var total = parseFloat(d['TOTAL_FLIGHTS']);
+					// console.log(delay);
+					if(total>=69 && total<=1342){
+						return "#b6cee2"
+					}
+					if(total>1342 && total<=3691){
+						return "#91b6d4"
+					}
+					if(total>3691 && total<=7554){
+						return "#6c9dc6"
+					}
+					if(total>7554 && total<=23948){
+						return "#4785b8"
+					}
+					if(total>23948){
+						return "#4078a5"
+					}
+				})
+                .style("stroke", "black")
+                .style("stroke-width", 1.5)
+                .append("title")
+                .text(function(d) { return d['AIRPORT']+"\n"+"Average Delay: "+d['AVG_DELAY'].substring(0,4)+" minutes \nTotal Flights: "+d['TOTAL_FLIGHTS']; });
+			});
 	});
 
 
