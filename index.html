@@ -10,6 +10,7 @@
 	<script src="https://d3js.org/topojson.v2.min.js"></script>
 	<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
 	<script src="js/odometer.min.js"></script>
+	<script src="js/d3-tip.js"></script>
 	<title>Timely Flights For You</title>
 </head>
 <style>
@@ -128,6 +129,34 @@
 		stroke: steelblue;
 		stroke-width: 2px;
 	}
+	.d3-tip {
+		line-height: 1;
+		font-weight: bold;
+		padding: 12px;
+		background: rgba(0, 0, 0, 0.8);
+		color: #fff;
+		border-radius: 2px;
+		}
+
+	/* Creates a small triangle extender for the tooltip */
+	.d3-tip:after {
+		box-sizing: border-box;
+		display: inline;
+		font-size: 1em;
+		width: 100%;
+		line-height: 1;
+		color: rgba(0, 0, 0, 0.8);
+		content: "\25BC";
+		position: absolute;
+		text-align: center;
+	}
+
+	/* Style northward tooltips differently */
+	.d3-tip.n:after {
+		margin: -1px 0 0 0;
+		top: 100%;
+		left: 0;
+	}
 </style>
 
 <body>
@@ -163,7 +192,7 @@
 		<div class="card-body">
 			<!-- <svg id="graph_3" width="1000" height="600"></svg> -->
 			<img src="airlines.png".png" width="750" height="1000">
-			<a href="#section4" id="navigation"><span></span><img style="width: 60px; height: auto" src="flight_icon.jpg"></a>
+			<a href="#section3" id="navigation"><span></span><img style="width: 60px; height: auto" src="flight_icon.jpg"></a>
 		</div>
 	</div>
 
@@ -171,9 +200,9 @@
 		<div class="card-header">
 			<h2>Does less average delay mean a better airline?</h2>
 		</div>
-		<div class="card-body">
+		<div class="card-body" id="block_4">
 			<!-- <svg id="graph_4" width="1000" height="600"></svg> -->
-			<img src="Sheet 4.png" width="900" height="600">
+			<!-- <img src="Sheet 4.png" width="900" height="600"> -->
 		</div>
 	</div>
 
@@ -445,5 +474,193 @@
 
 			
 		}	
+	});
+
+	//Delay count and average comparison graphs
+	d3.csv("data/airline-avg-delays.csv", function(error, data){
+		var tip = d3.tip()
+			.attr('class', 'd3-tip')
+			.offset([-10, 0])
+			.html(function(d) {
+				return "<strong>Frequency:</strong> <span style='color:red'>" + d.AVG_DELAY + " minutes</span>";
+			})
+
+		console.log(data);
+		for(i=0;i<data.length;i++){
+			data[i].AVG_DELAY = parseInt(data[i].AVG_DELAY);
+		}
+		var margin = {
+            top: 5,
+            right: 15,
+            bottom: 85,
+            left: 130
+        };
+
+        var width = 560 - margin.left - margin.right,
+            height = 400 - margin.top - margin.bottom;
+		
+		var svg = d3.select("#block_4").append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+		
+		svg.call(tip);
+
+        var x = d3.scaleLinear()
+            .range([0, width])
+            .domain([0, d3.max(data, function (d) {
+                return d.AVG_DELAY;
+            })]);
+
+        var y = d3.scaleBand()
+            .rangeRound([height, 0], .1)
+            .domain(data.map(function (d) {
+                return d.AIRLINE_NAME;
+            }));
+
+        //make y axis to show bar names
+        var yAxis = d3.axisLeft()
+            .scale(y)
+            //no tick marks
+            .tickSize(0)
+
+        var gy = svg.append("g")
+            .attr("class", "y axis")
+            .call(yAxis)
+
+        var bars = svg.selectAll(".bar")
+            .data(data)
+            .enter()
+            .append("g")
+			.on('mouseover', tip.show)
+      		.on('mouseout', tip.hide)
+
+        //append rects
+        bars.append("rect")
+            .attr("class", "bar")
+            .attr("y", function (d) {
+                return y(d.AIRLINE_NAME);
+            })
+			.style("stroke", "black")
+            .style("stroke-width", 1)
+            .attr("height", y.bandwidth())
+            .attr("x", 0)
+            .attr("width", function (d) {
+                return x(d.AVG_DELAY);
+            });
+
+        //add a value label to the right of each bar
+        // bars.append("text")
+        //     .attr("class", "label")
+        //     //y position of the label is halfway down the bar
+        //     .attr("y", function (d) {
+        //         return y(d.AIRLINE_NAME) + y.bandwidth() / 2 + 4;
+        //     })
+        //     //x position is 3 pixels to the right of the bar
+        //     .attr("x", function (d) {
+        //         return x(d.AVG_DELAY) + 3;
+        //     })
+        //     .text(function (d) {
+        //         return d.AVG_DELAY;
+        //     });
+		
+		// svg.append("text")             
+		// 	.attr("transform",
+		// 			"translate(" + (width/2) + " ," + 
+		// 						(height + margin.top + 20) + ")")
+		// 	.style("text-anchor", "middle")
+		// 	.text("Date");
+
+	});
+
+	d3.csv("data/airline-delay-count.csv", function(error, data){
+		var tip = d3.tip()
+			.attr('class', 'd3-tip')
+			.offset([-10, 0])
+			.html(function(d) {
+				return "<strong>Frequency:</strong> <span style='color:red'>" + d.DELAY_COUNT + "</span>";
+			})
+		console.log(data);
+		for(i=0;i<data.length;i++){
+			data[i].DELAY_COUNT = parseInt(data[i].DELAY_COUNT);
+		}
+		var margin = {
+            top: 5,
+            right: 15,
+            bottom: 85,
+            left: 130
+        };
+
+        var width = 560 - margin.left - margin.right,
+            height = 400 - margin.top - margin.bottom;
+		
+		var svg = d3.select("#block_4").append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+			.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+		
+		svg.call(tip);
+
+        var x = d3.scaleLinear()
+            .range([0, width])
+            .domain([0, d3.max(data, function (d) {
+                return d.DELAY_COUNT;
+            })]);
+
+        var y = d3.scaleBand()
+            .rangeRound([height, 0], .1)
+            .domain(data.map(function (d) {
+                return d.AIRLINE_NAME;
+            }));
+
+        //make y axis to show bar names
+        var yAxis = d3.axisLeft()
+            .scale(y)
+            //no tick marks
+            .tickSize(0)
+
+        var gy = svg.append("g")
+            .attr("class", "y axis")
+            .call(yAxis)
+
+        var bars = svg.selectAll(".bar")
+            .data(data)
+            .enter()
+			.append("g")
+			.on('mouseover', tip.show)
+      		.on('mouseout', tip.hide)
+
+        //append rects
+        bars.append("rect")
+            .attr("class", "bar")
+            .attr("y", function (d) {
+                return y(d.AIRLINE_NAME);
+            })
+			.style("stroke", "black")
+            .style("stroke-width", 1)
+            .attr("height", y.bandwidth())
+            .attr("x", 0)
+            .attr("width", function (d) {
+                return x(d.DELAY_COUNT);
+            });
+
+        //add a value label to the right of each bar
+        // bars.append("text")
+		// 	.style("font-size", "7px")
+        //     .attr("class", "label")
+        //     //y position of the label is halfway down the bar
+        //     .attr("y", function (d) {
+        //         return y(d.AIRLINE_NAME) + y.bandwidth() / 2 + 4;
+        //     })
+        //     //x position is 3 pixels to the right of the bar
+        //     .attr("x", function (d) {
+        //         return x(d.DELAY_COUNT) + 3;
+        //     })
+        //     .text(function (d) {
+        //         return d.DELAY_COUNT;
+        //     });
+
 	});
 </script>
