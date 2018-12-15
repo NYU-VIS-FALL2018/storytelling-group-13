@@ -482,7 +482,7 @@
 			.attr('class', 'd3-tip')
 			.offset([-10, 0])
 			.html(function(d) {
-				return "<strong>Frequency:</strong> <span style='color:red'>" + d.AVG_DELAY + " minutes</span>";
+				return "<strong>Average Delay: </strong> <span style='color:red'>" + d.AVG_DELAY + " minutes</span>";
 			})
 
 		console.log(data);
@@ -579,7 +579,7 @@
 			.attr('class', 'd3-tip')
 			.offset([-10, 0])
 			.html(function(d) {
-				return "<strong>Frequency:</strong> <span style='color:red'>" + d.DELAY_COUNT + "</span>";
+				return "<strong>Delay count: </strong> <span style='color:red'>" + d.DELAY_COUNT + "</span>";
 			})
 		console.log(data);
 		for(i=0;i<data.length;i++){
