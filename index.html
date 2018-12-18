@@ -25,24 +25,15 @@
 	.states :hover {
 		fill: lightgray;
 	}
-
-	/* .state-borders {
+	.states-borders {
 		fill: none;
-		stroke: #fff;
-		stroke-width: 2px;
+		stroke: #000;
+		stroke-width: 0.5px;
 		stroke-linejoin: round;
 		stroke-linecap: round;
 		pointer-events: none;
-	} */
-	.states-borders{
-		fill: none;
-	  stroke: #000;
-	  stroke-width: 0.5px;
-	  stroke-linejoin: round;
-	  stroke-linecap: round;
-	  pointer-events: none;
 	}
-	.bar{
+	.bar {
 		fill: steelblue
 	}
 	i {
@@ -57,23 +48,20 @@
 		transform: rotate(45deg);
 		-webkit-transform: rotate(45deg);
 	}
-	.container-fluid{
+	.container-fluid {
 		margin-top: 10px;
 		display: inline-block
 	}
-
 	html {
 		scroll-behavior: smooth;
 	}
-
 	.count {
 		padding: 10px;
 		margin: 5px;
 		font-weight: bold;
 		font-size: -webkit-xxx-large
 	}
-
-	.intro{
+	.intro {
 		height: 300px;
 		text-align: center;
 		margin-left: auto;
@@ -87,8 +75,7 @@
 		/* color: white */
 	  	/* height: 500px; */
 	}
-
-	.statement{
+	.statement {
 		display: none;
 		top: 55%;
 		left: 70%;
@@ -96,8 +83,7 @@
 		transform: translate(-50%, -50%);
 		font-weight: bold
 	}
-
-	#navigation{
+	#navigation {
 		-webkit-animation-name: godown; /* Safari 4.0 - 8.0 */
   		-webkit-animation-duration: 2s;
 		animation-name: godown;
@@ -105,10 +91,10 @@
 		animation-iteration-count: infinite;
 		position: relative;
 	}
-	#navigation:hover{
+	#navigation:hover {
 		animation-name: none;
 	}
-	@-webkit-keyframes godown{
+	@-webkit-keyframes godown {
 		0%   {background-color:red; left:0px; top:0px;}
 		/*25%  {background-color:yellow; left:200px; top:0px;}*/
 		/*50%  {background-color:blue; left:200px; top:200px;}*/
@@ -116,7 +102,7 @@
 		100% {background-color:red; left:0px; top:0px;}
 	}
 
-	@keyframes godown{
+	@keyframes godown {
 		0%   {background-color:red; left:0px; top:0px;}
 		/*25%  {background-color:yellow; left:200px; top:0px;}*/
 		/*50%  {background-color:blue; left:200px; top:200px;}*/
@@ -136,21 +122,19 @@
 		background: rgba(0, 0, 0, 0.8);
 		color: #fff;
 		border-radius: 2px;
-		}
-
+	}
 	/* Creates a small triangle extender for the tooltip */
 	.d3-tip:after {
 		box-sizing: border-box;
 		display: inline;
 		font-size: 1em;
-		width: 100%;
+		/* width: 100%; */
 		line-height: 1;
 		color: rgba(0, 0, 0, 0.8);
 		content: "\25BC";
 		position: absolute;
 		text-align: center;
 	}
-
 	/* Style northward tooltips differently */
 	.d3-tip.n:after {
 		margin: -1px 0 0 0;
@@ -191,7 +175,7 @@
 		</div>
 		<div class="card-body">
 			<!-- <svg id="graph_3" width="1000" height="600"></svg> -->
-			<img src="airlines.png".png" width="750" height="1000">
+			<img src="airlines.png" width="750" height="1000">
 			<a href="#section3" id="navigation"><span></span><img style="width: 60px; height: auto" src="flight_icon.jpg"></a>
 		</div>
 	</div>
@@ -200,10 +184,7 @@
 		<div class="card-header">
 			<h2>Does less average delay mean a better airline?</h2>
 		</div>
-		<div class="card-body" id="block_4">
-			<!-- <svg id="graph_4" width="1000" height="600"></svg> -->
-			<!-- <img src="Sheet 4.png" width="900" height="600"> -->
-		</div>
+		<div class="card-body" id="block_4"></div>
 	</div>
 
 	</body>
@@ -223,17 +204,17 @@
 	// 	$("html, body").animate({scrollTop: 700 }, 2000);
 	// });
 
-	$(document).ready(function(){
+	$(document).ready(function() {
 		$('.odometer').html(87564);
 		$('.statement').fadeIn(3000);
 	});
 
 	// Map of US
-	var map_svg = d3.select("#graph_1");
-	var projection = d3.geoMercator();
+	let map_svg = d3.select("#graph_1");
+	let projection = d3.geoMercator();
 
 	// create path variable
-	var path = d3.geoPath().projection(projection);
+	let path = d3.geoPath().projection(projection);
 
 	d3.json("js/us.json", function(error, us) {
 			if (error) throw error;
@@ -264,7 +245,7 @@
 			d3.csv("data/airport-delays.csv", function(error, data){
 				if (error) throw error;
 				console.log(data);
-				// var colorScale  = d3.scaleOrdinal(d3.schemeCategory10);
+				// let colorScale  = d3.scaleOrdinal(d3.schemeCategory10);
 
 				map_svg.selectAll("circle")
                 .data(data).enter()
@@ -274,7 +255,7 @@
                 .attr("cy", function (d) { return projection([parseFloat(d['LONGITUDE']), parseFloat(d['LATITUDE'])])[1]; })
                 .attr("r", function (d) { return  (15*(parseFloat(d['AVG_DELAY'])/77)).toString()+"px"})
                 .attr("fill", function(d){
-					var total = parseFloat(d['TOTAL_FLIGHTS']);
+					let total = parseFloat(d['TOTAL_FLIGHTS']);
 					// console.log(delay);
 					if(total>=69 && total<=1342){
 						return "#b6cee2"
@@ -299,23 +280,22 @@
 			});
 	});
 
-
 	// Bar chart of monthly avg delay
-	var margin = {top: 20, right: 20, bottom: 30, left: 40},
-			width = 800 - margin.left - margin.right,
-			height = 500 - margin.top - margin.bottom;
+	let margin = {top: 20, right: 20, bottom: 30, left: 40},
+				  width = 800 - margin.left - margin.right,
+				  height = 500 - margin.top - margin.bottom;
 
-	var x = d3.scaleBand()
-						.range([0, width])
-						.padding(0.1);
-	var y = d3.scaleLinear()
-						.range([height, 0]);
+	let x = d3.scaleBand()
+			  .range([0, width])
+			  .padding(0.1);
+	let y = d3.scaleLinear()
+			  .range([height, 0]);
 
-	var bar_svg = d3.select("#graph_2").append("svg")
-			.attr("width", width + margin.left + margin.right)
-			.attr("height", height + margin.top + margin.bottom)
-		.append("g")
-			.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+	let bar_svg = d3.select("#graph_2").append("svg")
+					.attr("width", width + margin.left + margin.right)
+					.attr("height", height + margin.top + margin.bottom)
+					.append("g")
+					.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 	d3.csv("data/monthly-delays.csv", function(error, data) {
 		if (error) throw error;
@@ -329,7 +309,7 @@
 	
 		bar_svg.selectAll(".bar")
 				.data(data)
-			.enter().append("rect")
+				.enter().append("rect")
 				.attr("class", "bar")
 				.attr("x", function(d) { return x(d.MONTH_NAME); })
 				.attr("width", x.bandwidth())
@@ -354,62 +334,61 @@
 			d.AVG_DELAY = +d.AVG_DELAY;
 		});
 
-		var dataset = data;
-		var data_map = {};
-		for(i=0;i<dataset.length;i++){
-			if(dataset[i].AIRLINE_NAME!="US Airways Inc."){
-				if(dataset[i].AIRLINE_NAME in data_map){
+		let dataset = data;
+		let data_map = {};
+		for(i=0; i<dataset.length; i++) {
+			if(dataset[i].AIRLINE_NAME != "US Airways Inc.") {
+				if(dataset[i].AIRLINE_NAME in data_map) {
 					data_map[dataset[i].AIRLINE_NAME].push(parseFloat(dataset[i].AVG_DELAY))
 				}
-				else{
+				else {
 					data_map[dataset[i].AIRLINE_NAME] = [parseFloat(dataset[i].AVG_DELAY)];
 				}
 			}
 		}
 		console.log(data_map);
-		var airlines = Object.keys(data_map);
+		let airlines = Object.keys(data_map);
 
-		var margin = {top: 20, right: 20, bottom: 30, left: 50},
+		let margin = {top: 20, right: 20, bottom: 30, left: 50},
 			width = 960 - margin.left - margin.right,
 			height = 500 - margin.top - margin.bottom;
 
-		var svg = d3.select("#graph_3").append("svg")
-				.attr("width", width + margin.left + margin.right)
-				.attr("height", height + margin.top + margin.bottom)
-				.append("g")
-				.attr("transform",
-					"translate(" + margin.left + "," + margin.top + ")");
+		let svg = d3.select("#graph_3").append("svg")
+					.attr("width", width + margin.left + margin.right)
+					.attr("height", height + margin.top + margin.bottom)
+					.append("g")
+					.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 		
 		// set the ranges
-		var x = d3.scaleLinear().range([0, width]);
-		var y = d3.scaleLinear().range([height, 0]);
+		let x = d3.scaleLinear().range([0, width]);
+		let y = d3.scaleLinear().range([height, 0]);
 
 		// Add the X Axis
 		svg.append("g")
-				.attr("transform", "translate(0," + height + ")")
-				.call(d3.axisBottom(x));
+		   .attr("transform", "translate(0," + height + ")")
+		   .call(d3.axisBottom(x));
 
 		// Add the Y Axis
 		svg.append("g")
-			.call(d3.axisLeft(y));
+		   .call(d3.axisLeft(y));
 
-		for(index=0;index<airlines.length;index++){
+		for(index=0; index<airlines.length; index++) {
 			// console.log(data_map[airlines[index]])
-			// var xScale = d3.scaleBand()
+			// let xScale = d3.scaleBand()
 			// 		.range([0, width]);
 
-			// var yScale = d3.scaleLinear()
+			// let yScale = d3.scaleLinear()
 			// 		.range([height, 0]);
 
 			// xScale.domain([1,2,3,4,5,6,7,8,9,10,11,12]);
 			// yScale.domain([0, d3.max(data_map[airlines[index]], function(d) { return parseFloat(d); })]);
 
-			// var line = d3.line()
+			// let line = d3.line()
 			// 		.x(function(d, i) { return xScale([1,2,3,4,5,6,7,8,9,10,11,12]); })
 			// 		.y(function(d) { return yScale(parseFloat(d)); })
 			// 		.curve(d3.curveMonotoneX)
 
-			// var line_svg = d3.select("#graph_3").append("svg")
+			// let line_svg = d3.select("#graph_3").append("svg")
 			// 	.attr("width", width + margin.left + margin.right)
 			// 	.attr("height", height + margin.top + margin.bottom)
 			// 	.append("g")
@@ -430,19 +409,18 @@
 			// 	.attr("d", line);
 
 			// define the 1st line
-			var valueline = d3.line()
+			let valueline = d3.line()
 				.x([1,2,3,4,5,6,7,8,9,10,11,12])
 				.y(function(d) { console.log(d, y(d)); return y(d); });
 
 			// // define the 2nd line
-			// var valueline2 = d3.line()
+			// let valueline2 = d3.line()
 			// 	.x(function(d) { return x(d.date); })
 			// 	.y(function(d) { return y(d.open); });
 
 			// append the svg obgect to the body of the page
 			// appends a 'group' element to 'svg'
 			// moves the 'group' element to the top left margin
-			
 
 			// Get the data
 
@@ -455,8 +433,7 @@
 
 			// Scale the range of the data
 			x.domain([1,2,3,4,5,6,7,8,9,10,11,12]);
-			y.domain([0, d3.max(data_map[airlines[index]], function(d) {
-				return d; })]);
+			y.domain([0, d3.max(data_map[airlines[index]], function(d) { return d; })]);
 
 			// Add the valueline path.
 			svg.append("path")
@@ -471,14 +448,12 @@
 			// 	.attr("class", "line")
 			// 	.style("stroke", "red")
 			// 	.attr("d", valueline2);
-
-			
 		}	
 	});
 
-	//Delay count and average comparison graphs
+	// Delay count and average comparison graphs
 	d3.csv("data/airline-avg-delays.csv", function(error, data){
-		var tip = d3.tip()
+		let tip = d3.tip()
 			.attr('class', 'd3-tip')
 			.offset([-10, 0])
 			.html(function(d) {
@@ -489,17 +464,18 @@
 		for(i=0;i<data.length;i++){
 			data[i].AVG_DELAY = parseInt(data[i].AVG_DELAY);
 		}
-		var margin = {
+		
+		let margin = {
             top: 5,
             right: 15,
             bottom: 85,
             left: 130
         };
 
-        var width = 560 - margin.left - margin.right,
+        let width = 560 - margin.left - margin.right,
             height = 400 - margin.top - margin.bottom;
 		
-		var svg = d3.select("#block_4").append("svg")
+		let svg = d3.select("#block_4").append("svg")
             .attr("width", width + margin.left + margin.right)
             .attr("height", height + margin.top + margin.bottom)
             .append("g")
@@ -507,29 +483,29 @@
 		
 		svg.call(tip);
 
-        var x = d3.scaleLinear()
+        let x = d3.scaleLinear()
             .range([0, width])
             .domain([0, d3.max(data, function (d) {
                 return d.AVG_DELAY;
             })]);
 
-        var y = d3.scaleBand()
+        let y = d3.scaleBand()
             .rangeRound([height, 0], .1)
             .domain(data.map(function (d) {
                 return d.AIRLINE_NAME;
             }));
 
         //make y axis to show bar names
-        var yAxis = d3.axisLeft()
+        let yAxis = d3.axisLeft()
             .scale(y)
             //no tick marks
             .tickSize(0)
 
-        var gy = svg.append("g")
+        let gy = svg.append("g")
             .attr("class", "y axis")
             .call(yAxis)
 
-        var bars = svg.selectAll(".bar")
+        let bars = svg.selectAll(".bar")
             .data(data)
             .enter()
             .append("g")
@@ -575,7 +551,7 @@
 	});
 
 	d3.csv("data/airline-delay-count.csv", function(error, data){
-		var tip = d3.tip()
+		let tip = d3.tip()
 			.attr('class', 'd3-tip')
 			.offset([-10, 0])
 			.html(function(d) {
@@ -585,17 +561,17 @@
 		for(i=0;i<data.length;i++){
 			data[i].DELAY_COUNT = parseInt(data[i].DELAY_COUNT);
 		}
-		var margin = {
+		let margin = {
             top: 5,
             right: 15,
             bottom: 85,
             left: 130
         };
 
-        var width = 560 - margin.left - margin.right,
+        let width = 560 - margin.left - margin.right,
             height = 400 - margin.top - margin.bottom;
 		
-		var svg = d3.select("#block_4").append("svg")
+		let svg = d3.select("#block_4").append("svg")
             .attr("width", width + margin.left + margin.right)
             .attr("height", height + margin.top + margin.bottom)
             .append("g")
@@ -603,29 +579,29 @@
 		
 		svg.call(tip);
 
-        var x = d3.scaleLinear()
+        let x = d3.scaleLinear()
             .range([0, width])
             .domain([0, d3.max(data, function (d) {
                 return d.DELAY_COUNT;
             })]);
 
-        var y = d3.scaleBand()
+        let y = d3.scaleBand()
             .rangeRound([height, 0], .1)
             .domain(data.map(function (d) {
                 return d.AIRLINE_NAME;
             }));
 
         //make y axis to show bar names
-        var yAxis = d3.axisLeft()
+        let yAxis = d3.axisLeft()
             .scale(y)
             //no tick marks
             .tickSize(0)
 
-        var gy = svg.append("g")
+        let gy = svg.append("g")
             .attr("class", "y axis")
             .call(yAxis)
 
-        var bars = svg.selectAll(".bar")
+        let bars = svg.selectAll(".bar")
             .data(data)
             .enter()
 			.append("g")
