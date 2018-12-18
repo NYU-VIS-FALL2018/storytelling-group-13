@@ -2,7 +2,7 @@
 <html>
 <head>
 	<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" href="site.scss">
+	<link rel="stylesheet" type="text/css" href="css/site.css">
 	<link rel="stylesheet" type="text/css" href="css/odometer-theme-default.css">
 	<script type="text/javascript" src="bootstrap/js/jquery-3.3.1.slim.min.js"></script>
 	<script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
@@ -13,135 +13,6 @@
 	<script src="js/d3-tip.js"></script>
 	<title>Timely Flights For You</title>
 </head>
-<style>
-	.line {
-	    fill: none;
-	    stroke: steelblue;
-	    stroke-width: 2px;
-	}
-	.mesh{
-		fill: lightgrey
-	}
-	.states :hover {
-		fill: lightgray;
-	}
-	.states-borders {
-		fill: none;
-		stroke: #000;
-		stroke-width: 0.5px;
-		stroke-linejoin: round;
-		stroke-linecap: round;
-		pointer-events: none;
-	}
-	.bar {
-		fill: steelblue
-	}
-	i {
-		border: solid black;
-		border-width: 0 3px 3px 0;
-		display: inline-block;
-		padding: 3px;
-		position: absolute;
-		left: 50%;
-	}
-	.down {
-		transform: rotate(45deg);
-		-webkit-transform: rotate(45deg);
-	}
-	.container-fluid {
-		margin-top: 10px;
-		display: inline-block
-	}
-	html {
-		scroll-behavior: smooth;
-	}
-	.count {
-		padding: 10px;
-		margin: 5px;
-		font-weight: bold;
-		font-size: -webkit-xxx-large
-	}
-	.intro {
-		height: 300px;
-		text-align: center;
-		margin-left: auto;
-		margin-right: auto;
-		position: relative;
-		background: url("https://cdn.dribbble.com/users/398490/screenshots/2189858/airplane-for-dribbble.gif");
-		background-size: cover;
-		/* background-size: auto 385%; */
-		background-position-x: -270px;
-		background-position-y: 50%;
-		/* color: white */
-	  	/* height: 500px; */
-	}
-	.statement {
-		display: none;
-		top: 55%;
-		left: 70%;
-		position: absolute;
-		transform: translate(-50%, -50%);
-		font-weight: bold
-	}
-	#navigation {
-		-webkit-animation-name: godown; /* Safari 4.0 - 8.0 */
-  		-webkit-animation-duration: 2s;
-		animation-name: godown;
-		animation-duration: 2s;
-		animation-iteration-count: infinite;
-		position: relative;
-	}
-	#navigation:hover {
-		animation-name: none;
-	}
-	@-webkit-keyframes godown {
-		0%   {background-color:red; left:0px; top:0px;}
-		/*25%  {background-color:yellow; left:200px; top:0px;}*/
-		/*50%  {background-color:blue; left:200px; top:200px;}*/
-		75%  {background-color:green; left:0px; top:30px;}
-		100% {background-color:red; left:0px; top:0px;}
-	}
-
-	@keyframes godown {
-		0%   {background-color:red; left:0px; top:0px;}
-		/*25%  {background-color:yellow; left:200px; top:0px;}*/
-		/*50%  {background-color:blue; left:200px; top:200px;}*/
-		/*75%  {background-color:green; left:0px; top:200px;}*/
-		75%  {background-color:green; left:0px; top:30px;}
-		100% {background-color:red; left:0px; top:0px;}
-	}
-	.line {
-		fill: none;
-		stroke: steelblue;
-		stroke-width: 2px;
-	}
-	.d3-tip {
-		line-height: 1;
-		font-weight: bold;
-		padding: 12px;
-		background: rgba(0, 0, 0, 0.8);
-		color: #fff;
-		border-radius: 2px;
-	}
-	/* Creates a small triangle extender for the tooltip */
-	.d3-tip:after {
-		box-sizing: border-box;
-		display: inline;
-		font-size: 1em;
-		/* width: 100%; */
-		line-height: 1;
-		color: rgba(0, 0, 0, 0.8);
-		content: "\25BC";
-		position: absolute;
-		text-align: center;
-	}
-	/* Style northward tooltips differently */
-	.d3-tip.n:after {
-		margin: -1px 0 0 0;
-		top: 100%;
-		left: 0;
-	}
-</style>
 
 <body>
 	<div class="intro">
@@ -154,7 +25,7 @@
 		</div>
 		<div class="card-body">
 			<svg id="graph_1" width="1000" height="600"></svg>
-			<a href="#section2" id="navigation"><span></span><img style="width: 60px; height: auto" src="flight_icon.jpg"></a>
+			<a href="#section2" id="navigation"><span></span><img style="width: 60px; height: auto" src="images/flight_icon.jpg"></a>
 		</div>
 	</div>
 
@@ -164,7 +35,7 @@
 		</div>
 		<div class="card-body">
 				<svg id="graph_2" width="1000" height="600"></svg>
-				<a href="#section3" id="navigation"><span></span><img style="width: 60px; height: auto" src="flight_icon.jpg"></a>
+				<a href="#section3" id="navigation"><span></span><img style="width: 60px; height: auto" src="images/flight_icon.jpg"></a>
 			</div>
 		</div>
 	</div>
@@ -176,7 +47,7 @@
 		<div class="card-body">
 			<!-- <svg id="graph_3" width="1000" height="600"></svg> -->
 			<img src="airlines.png" width="750" height="1000">
-			<a href="#section3" id="navigation"><span></span><img style="width: 60px; height: auto" src="flight_icon.jpg"></a>
+			<a href="#section3" id="navigation"><span></span><img style="width: 60px; height: auto" src="images/flight_icon.jpg"></a>
 		</div>
 	</div>
 
@@ -216,7 +87,7 @@
 	// create path variable
 	let path = d3.geoPath().projection(projection);
 
-	d3.json("js/us.json", function(error, us) {
+	d3.json("data/us.json", function(error, us) {
 			if (error) throw error;
 
 			states = topojson.feature(us, us.objects.states).features
@@ -452,7 +323,7 @@
 	});
 
 	// Delay count and average comparison graphs
-	d3.csv("data/airline-avg-delays.csv", function(error, data){
+	d3.csv("data/airline-avg-delays.csv", function(error, data) {
 		let tip = d3.tip()
 			.attr('class', 'd3-tip')
 			.offset([-10, 0])
@@ -461,10 +332,10 @@
 			})
 
 		console.log(data);
-		for(i=0;i<data.length;i++){
+		for(i=0; i<data.length; i++) {
 			data[i].AVG_DELAY = parseInt(data[i].AVG_DELAY);
 		}
-		
+
 		let margin = {
             top: 5,
             right: 15,
@@ -495,10 +366,10 @@
                 return d.AIRLINE_NAME;
             }));
 
-        //make y axis to show bar names
+        // make y axis to show bar names
         let yAxis = d3.axisLeft()
             .scale(y)
-            //no tick marks
+            // no tick marks
             .tickSize(0)
 
         let gy = svg.append("g")
@@ -550,7 +421,7 @@
 
 	});
 
-	d3.csv("data/airline-delay-count.csv", function(error, data){
+	d3.csv("data/airline-delay-count.csv", function(error, data) {
 		let tip = d3.tip()
 			.attr('class', 'd3-tip')
 			.offset([-10, 0])
