@@ -45,8 +45,8 @@
 			<h2>How much are airlines affected on a temporal basis?</h2>
 		</div>
 		<div class="card-body">
-			<!-- <svg id="graph_3" width="1000" height="600"></svg> -->
-			<img src="airlines.png" width="750" height="1000">
+			<svg id="graph_3" width="1000" height="600"></svg>
+			<!-- <img src="airlines.png" width="750" height="1000"> -->
 			<a href="#section3" id="navigation"><span></span><img style="width: 60px; height: auto" src="images/flight_icon.jpg"></a>
 		</div>
 	</div>
@@ -224,11 +224,11 @@
 			width = 960 - margin.left - margin.right,
 			height = 500 - margin.top - margin.bottom;
 
-		let svg = d3.select("#graph_3").append("svg")
-					.attr("width", width + margin.left + margin.right)
-					.attr("height", height + margin.top + margin.bottom)
-					.append("g")
-					.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+		// let svg = d3.select("#graph_3").append("svg")
+		// 			.attr("width", width + margin.left + margin.right)
+		// 			.attr("height", height + margin.top + margin.bottom)
+		// 			.append("g")
+		// 			.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 		
 		// set the ranges
 		let x = d3.scaleLinear().range([0, width]);
@@ -510,4 +510,85 @@
         //     });
 
 	});
+
+
+
+
+	// Get the data
+d3.csv("data/airline-avg-monthly-delay.csv", function(error, data) {
+	// Set the dimensions of the canvas / graph
+	var margin = {top: 30, right: 20, bottom: 70, left: 50},
+	    width = 600 - margin.left - margin.right,
+	    height = 300 - margin.top - margin.bottom;
+
+	// Parse the date / time
+	var parseDate = d3.timeParse("%b %Y");
+
+	// Set the ranges
+	var x = d3.scaleTime().range([0, width]);  
+	var y = d3.scaleLinear().range([height, 0]);
+
+	// Define the line
+	var priceline = d3.line() 
+	    .x(function(d) { return x(d.MONTH); })
+	    .y(function(d) { return y(d.AVG_DELAY); });
+	    
+	// Adds the svg canvas
+	var multi_line_svg = d3.select("#graph_3")
+	    .append("svg")
+	        .attr("width", width + margin.left + margin.right)
+	        .attr("height", height + margin.top + margin.bottom)
+	    .append("g")
+	        .attr("transform", 
+	              "translate(" + margin.left + "," + margin.top + ")");
+
+    data.forEach(function(d) {
+    d.MONTH = parseDate(d.MONTH);
+    d.AVG_DELAY = +d.AVG_DELAY;
+    });
+
+    // Scale the range of the data
+    x.domain(d3.extent(data, function(d) { return d.MONTH; }));
+    y.domain([0, d3.max(data, function(d) { return d.AVG_DELAY; })]);
+
+    // Nest the entries by AIRLINE_NAME
+    var dataNest = d3.nest()
+        .key(function(d) {return d.AIRLINE_NAME;})
+        .entries(data);
+
+    // set the colour scale
+    var color = d3.scaleOrdinal(d3.schemeCategory10);
+
+    legendSpace = width/dataNest.length; // spacing for the legend
+
+    // Loop through each AIRLINE_NAME / key
+    dataNest.forEach(function(d,i) { 
+
+        multi_line_svg.append("path")
+            .attr("class", "line")
+            .style("stroke", function() { // Add the colours dynamically
+                return d.color = color(d.key); })
+            .attr("d", priceline(d.values));
+
+        // Add the Legend
+        multi_line_svg.append("text")
+            .attr("x", (legendSpace/2)+i*legendSpace)  // space legend
+            .attr("y", height + (margin.bottom/2)+ 5)
+            .attr("class", "legend")    // style the legend
+            .style("fill", function() { // Add the colours dynamically
+                return d.color = color(d.key); })
+            .text(d.key);
+    });
+
+  // Add the X Axis
+  multi_line_svg.append("g")
+      .attr("class", "axis")
+      .attr("transform", "translate(0," + height + ")")
+      .call(d3.axisBottom(x));
+
+  // Add the Y Axis
+  multi_line_svg.append("g")
+      .attr("class", "axis")
+      .call(d3.axisLeft(y));
+});
 </script>
