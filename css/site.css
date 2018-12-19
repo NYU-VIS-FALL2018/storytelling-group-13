@@ -53,11 +53,8 @@ html {
     position: relative;
     background: url("https://cdn.dribbble.com/users/398490/screenshots/2189858/airplane-for-dribbble.gif");
     background-size: cover;
-    /* background-size: auto 385%; */
-    background-position-x: -270px;
+    background-position-x: -200px;
     background-position-y: 50%;
-    /* color: white */
-      /* height: 500px; */
 }
 .statement {
     display: none;
@@ -68,8 +65,8 @@ html {
     font-weight: bold
 }
 #navigation {
-    -webkit-animation-name: godown; /* Safari 4.0 - 8.0 */
-      -webkit-animation-duration: 2s;
+    -webkit-animation-name: godown;
+    -webkit-animation-duration: 2s;
     animation-name: godown;
     animation-duration: 2s;
     animation-iteration-count: infinite;
