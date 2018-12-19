@@ -1,15 +1,15 @@
-,AIRLINE_NAME,DELAY_COUNT
-0,Frontier Airlines Inc.,23570
-1,Southwest Airlines Co.,236626
-2,Skywest Airlines Inc.,107795
-3,United Air Lines Inc.,104722
-4,Atlantic Southeast Airlines,109184
-5,JetBlue Airways,59175
-6,American Eagle Airlines Inc.,60547
-7,American Airlines Inc.,130279
-8,Virgin America,11778
-9,Spirit Air Lines,34221
-10,Delta Air Lines Inc.,118023
-11,Alaska Airlines Inc.,22352
-12,Hawaiian Airlines Inc.,8618
-13,US Airways Inc.,36549
+AIRLINE_NAME,DELAY_COUNT
+Frontier Airlines Inc.,23570
+Southwest Airlines Co.,236626
+Skywest Airlines Inc.,107795
+United Air Lines Inc.,104722
+Atlantic Southeast Airlines,109184
+JetBlue Airways,59175
+American Eagle Airlines Inc.,60547
+American Airlines Inc.,130279
+Virgin America,11778
+Spirit Air Lines,34221
+Delta Air Lines Inc.,118023
+Alaska Airlines Inc.,22352
+Hawaiian Airlines Inc.,8618
+US Airways Inc.,36549
