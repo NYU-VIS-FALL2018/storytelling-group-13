@@ -9,4 +9,4 @@ Information Visualization Project (Group 13)
 
 [Project Description](project.pdf)
 
-[Screenshot](capture.PNG)
+![Screenshot](screenshot.png)
