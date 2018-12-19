@@ -8,3 +8,5 @@ Information Visualization Project (Group 13)
 [DEMO](https://nyu-vis-fall2018.github.io/timely-flights/)
 
 [Project Description](project.pdf)
+
+[Screenshot](capture.PNG)
