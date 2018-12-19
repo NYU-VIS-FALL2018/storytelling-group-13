@@ -4,7 +4,7 @@
     stroke-width: 2px;
 }
 .mesh{
-    fill: lightgrey
+    fill: lightgray
 }
 .states :hover {
     fill: lightgray;
@@ -76,20 +76,14 @@ html {
     animation-name: none;
 }
 @-webkit-keyframes godown {
-    0%   {background-color:red; left:0px; top:0px;}
-    /*25%  {background-color:yellow; left:200px; top:0px;}*/
-    /*50%  {background-color:blue; left:200px; top:200px;}*/
-    75%  {background-color:green; left:0px; top:30px;}
-    100% {background-color:red; left:0px; top:0px;}
+    0%   {left:0px; top:0px;}
+    75%  {left:0px; top:30px;}
+    100% {left:0px; top:0px;}
 }
-
 @keyframes godown {
-    0%   {background-color:red; left:0px; top:0px;}
-    /*25%  {background-color:yellow; left:200px; top:0px;}*/
-    /*50%  {background-color:blue; left:200px; top:200px;}*/
-    /*75%  {background-color:green; left:0px; top:200px;}*/
-    75%  {background-color:green; left:0px; top:30px;}
-    100% {background-color:red; left:0px; top:0px;}
+    0%   {left:0px; top:0px;}
+    75%  {left:0px; top:30px;}
+    100% {left:0px; top:0px;}
 }
 .line {
     fill: none;
@@ -109,7 +103,6 @@ html {
     box-sizing: border-box;
     display: inline;
     font-size: 1em;
-    /* width: 100%; */
     line-height: 1;
     color: rgba(0, 0, 0, 0.8);
     content: "\25BC";
