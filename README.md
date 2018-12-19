@@ -9,4 +9,9 @@ Information Visualization Project (Group 13)
 
 [Project Description](project.pdf)
 
-![Screenshot](screenshot.png)
+![Screenshot alt](screenshot.png "Screenshot Image")
+
+#### Description ####
+* Circles represent the airports present in the US
+* Size of the circle represent average flight delay (in minutes) for a particular airport
+* Colour intensity of the circle represents the total number of flights per day (inbound + outbound)
