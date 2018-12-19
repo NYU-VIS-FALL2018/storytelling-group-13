@@ -1,4 +1,4 @@
-# Project Name
+# Timely Flights
 **Authors**: Dhaval Popat (dkp288), Ronak Thakkar (rht241 - online), Sameer Korlahalli (ssk698)
 
 Group 13
