@@ -25,4 +25,4 @@ Variability in flight delays can be divided into various aspects such as tempora
 ## More
 [DEMO](https://nyu-vis-fall2018.github.io/timely-flights/)
 
-[Project Description](report.pdf)
+[Project Description](Report.pdf)
