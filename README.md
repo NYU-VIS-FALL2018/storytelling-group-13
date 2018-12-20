@@ -8,10 +8,9 @@ Variability in flight delays can be divided into various aspects such as tempora
 
 ![Visualization 1](images/vis1.PNG "Visualization 1")
 
-#### Description ####
-* Circles represent the airports present in the US
-* Size of the circle represent average flight delay (in minutes) for a particular airport
-* Colour intensity of the circle represents the total number of flights per day (inbound + outbound) handled by a particular airport 
+* The circles represent airports present in the US.
+* The size of circle represents average flight delay (in minutes) for a particular airport.
+* The colour intensity of circle represents total number of daily flights (inbound and outbound) handled by a particular airport.
 
 ![Visualization 2](images/vis2.PNG "Visualization 2")
 
