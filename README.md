@@ -18,6 +18,9 @@ Variability in flight delays can be divided into various aspects such as tempora
 
 ![Visualization 4](images/vis4.PNG "Visualization 4")
 
+* The left graph in above visualization represents average flight delay of individual airlines sorted in ascending order.
+* The right graph indicates total number of flights for the corresponding airline.
+
 
 ## More
 [DEMO](https://nyu-vis-fall2018.github.io/timely-flights/)
