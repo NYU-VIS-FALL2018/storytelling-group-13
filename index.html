@@ -113,29 +113,26 @@
                 .attr("r", function (d) { return  (15*(parseFloat(d['AVG_DELAY'])/77)).toString()+"px"})
                 .attr("fill", function(d){
 					let total = parseFloat(d['TOTAL_FLIGHTS']);
-					if (total<=70) {
+					if (total<=1350) {
 						return "#dbe7f0"
 					}
-					else if (total>70 && total<=1350) {
+					else if (total>1350 && total<=3700) {
 						return "#b6cee2"
 					}
-					else if (total>1350 && total<=3700) {
+					else if (total>3700 && total<=7550) {
 						return "#91b6d4"
 					}
-					else if (total>3700 && total<=7550) {
+					else if (total>7550 && total<=24000) {
 						return "#6c9dc6"
 					}
-					else if (total>7550 && total<=24000) {
+					else if (total>24000 && total<=100000) {
 						return "#4785b8"
 					}
-					else if (total>24000 && total<=100000) {
+					else if (total>100000 && total<=350000) {
 						return "#4078a5"
 					}
-					else if (total>100000 && total<=350000) {
-						return "#325d81"
-					}
 					else {
-						return "#24435c"
+						return "#325d81"
 					}
 				})
                 .style("stroke", "black")
